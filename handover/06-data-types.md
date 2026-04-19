@@ -16,9 +16,62 @@
 - State management: request `src/logic/state.ts`
 
 ## Files To Request
-- `src/types/domain.ts` — all data types
+- `src/types/domain.ts` — all data types (Project, Variation, QuoteScope, ProjectBaseline, ParametricItem)
 - `src/types/appState.ts` — app state shape
+- `src/utils/categories/types.ts` — `WorkCategory`, `CategoryArchetype`, `CategoryDimensionMode`, `cat()` and `catX()` factories
 - `src/logic/state.ts` — state management functions that use these types
+
+---
+
+## Phase 2 — Category Type Surface
+
+### CategoryArchetype
+```typescript
+type CategoryArchetype = 'assembly' | 'trade' | 'element' | 'compliance';
+```
+- `assembly` — room recipe that bundles multiple trades (Bathroom, Kitchen, Granny Flat). Has `bundles: string[]` of child trade IDs it absorbs.
+- `trade` — single discipline (Electrical, Plumbing, Tiling). Usually `usesParametric: true`.
+- `element` — one buildable thing with type-first selection (Internal Wall, Cladding, Fence). Type chosen before dimensions appear.
+- `compliance` — count-only fittings (Smoke Alarm, Grab Rail). No dimensions ever.
+
+### CategoryDimensionMode
+```typescript
+type CategoryDimensionMode = 'area' | 'linear' | 'wall' | 'room' | 'item' | 'roof' | 'none';
+```
+
+### WorkCategory (Phase 2 fields)
+```typescript
+{
+  archetype: CategoryArchetype;
+  dimensionMode: CategoryDimensionMode;
+  usesParametric: boolean;     // shows BoQ unit picker instead of generic stages
+  supportsPcItems: boolean;    // shows PC Items table in Details
+  bundles?: string[];          // child trade IDs absorbed by an assembly
+  // ...plus existing fields: id, label, icon, group, questions, stages, relations, inclusions, exclusions, pcItems
+}
+```
+
+### ProjectBaseline (Phase 1)
+```typescript
+{
+  totalAreaM2: number;
+  storeys: 'single' | 'double' | 'multi';
+  siteAccess: 'easy' | 'moderate' | 'tight';
+}
+```
+
+### ParametricItem (Phase 1)
+```typescript
+{
+  id: string;
+  unitId: string;        // references parametricUnits.ts entry
+  label: string;         // e.g. "Double GPO supply + install"
+  trade: string;
+  unit: 'point' | 'lm' | 'item' | 'm2';
+  rate: number;
+  quantity: number;
+}
+```
 
 ---
 
@@ -28,12 +81,12 @@
 ```typescript
 {
   id: string;
-  name: string;                            // "Smith Bathroom Reno"
-  address: string;                         // "12 Ebden St, Kew"
+  name: string;                                  // "Smith Bathroom Reno"
+  address: string;                               // "12 Ebden St, Kew"
   customer: { name: string; email: string; phone: string };
-  companyId: string;                       // "segal-build" or "segval"
-  heroPhoto?: string;                      // Cloudinary URL or base64
-  createdAt: string;                       // ISO date
+  companyId: string;                             // "segal-build" or "segval"
+  heroPhoto?: string;                            // Cloudinary URL or base64
+  createdAt: string;                             // ISO date
 }
 ```
 

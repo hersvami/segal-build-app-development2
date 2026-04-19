@@ -53,6 +53,20 @@
 | 28 | 4 | Each module must assume AI has NO code access | ✅ Done | All modules say "ask user for files", list exact files |
 | 29 | 4 | Include module for final AI to combine everything | ✅ Done | Created `handover/12-final-assembly.md` with 9-phase build |
 | 30 | 4 | Each module must reference other modules exist | ✅ Done | All modules have "Other Modules You May Need" + "1 of 13" |
+| 31 | 5 | Bigger scope window (multi-line auto-expanding) | ✅ Done | `ScopeStep.tsx` textarea 3–10 rows |
+| 32 | 5 | API key must be remembered across sessions | ✅ Done | `localStorage` key `segal:geminiApiKey` + restored badge + cross-tab `storage` sync |
+| 33 | 5 | Project Baseline (size / storeys / access) before scopes | ✅ Done | `BaselineStep.tsx` + `baselineMultipliers.ts` |
+| 34 | 5 | Parametric / Rawlinsons-style unit pricing | 🟡 Partial | Scaffolded in `parametricUnits.ts` for Electrical; full rate audit + rollout queued in `13-phase-2-rollout.md` |
+| 35 | 5 | "Recognise Categories" button does nothing visible | ✅ Done | Now shows "Found N matches — top: …" / "No clear matches" pill |
+| 36 | 5 | Bathroom didn't auto-pull bundled trades | ✅ Done | BFS auto-walk of `relations.type === 'auto'`; explicit `bundles` array on Bathroom |
+| 37 | 5 | No way to expand a category to see what's inside | ✅ Done | `CategoryInfoPanel.tsx` shows stages, PC items, inclusions, exclusions, related categories |
+| 38 | 5 | Internal Walls falsely locked Electrical | ✅ Done | `getOverlapReason()` rewritten to read only `bundles` (not loose `relations`) |
+| 39 | 5 | Add button hard-disabled when warning shown | ✅ Done | Button never disabled; turns amber **"Add Anyway"** instead |
+| 40 | 6 | Bathroom = label for trades; treat as Room Assembly | 📋 Planned | Documented as Phase 2 in `handover/13-phase-2-rollout.md` |
+| 41 | 6 | Strict dimension audit (no width on smoke alarm etc.) | 📋 Planned | Phase 2 step 2 — see `handover/13-phase-2-rollout.md` |
+| 42 | 6 | Project Scope vs Category Scope separation | 📋 Planned | Phase 2 step 4 — see `handover/13-phase-2-rollout.md` |
+| 43 | 6 | Realistic Rawlinsons unit rates across all parametric units | 📋 Planned | Phase 2 step 5 — see `handover/13-phase-2-rollout.md` |
+| 44 | 6 | Assembly questions must drive bundled-trade quantities | 📋 Planned | Phase 2 step 6 — see `handover/13-phase-2-rollout.md` |
 
 ## How to Update This Log
 When the user gives new feedback:

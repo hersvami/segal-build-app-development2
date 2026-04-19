@@ -81,7 +81,7 @@ async function callGeminiWithFallback(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+          generationConfig: { temperature: 0.6, maxOutputTokens: 4096, topP: 0.95 },
         }),
       });
 
@@ -152,11 +152,25 @@ export async function polishScopeWithAI(
 ): Promise<{ text: string; model?: string; tier?: number; fallback?: boolean }> {
   if (!apiKey) return { text: description };
 
-  const prompt = `You are an expert Australian construction estimator. Rewrite the following rough builder notes into a professional, clear scope of works description. Use correct Australian building terminology (e.g., "plasterboard" not "drywall", "colour" not "color"). Keep it concise but comprehensive. Include specific trade references where appropriate.
+  const prompt = `You are a senior Australian construction estimator writing a formal Scope of Works.
 
-Builder notes: "${description}"
+Rewrite the builder notes below into a complete, professionally structured Scope of Works using clear, plain Australian building terminology (e.g. "plasterboard", "colour", "skirting", "architrave", "tapware", "cornice").
 
-Return ONLY the rewritten professional scope description, nothing else.`;
+Output requirements:
+- Start with a one-line summary heading (no markdown).
+- Then 4–8 short sections, each with a bold header on its own line, e.g. "Demolition:", "Structural:", "Plumbing:", "Electrical:", "Wet Areas / Waterproofing:", "Finishes:", "Inclusions:", "Exclusions:".
+- Under each header, use short bullet points (one per line) starting with "- ".
+- Reference relevant trades, AS standards (e.g. AS3740 waterproofing) and BCA where appropriate.
+- Do NOT invent dimensions or PC item dollar values that weren't in the notes.
+- Do NOT use markdown asterisks for bold (no **). Use plain text headers ending in ":".
+- Cover the full scope; do not stop early. Write the whole document.
+
+Builder notes:
+"""
+${description}
+"""
+
+Return ONLY the finished Scope of Works document. No preamble, no closing remarks.`;
 
   try {
     const result = await callGeminiWithFallback(prompt, apiKey);

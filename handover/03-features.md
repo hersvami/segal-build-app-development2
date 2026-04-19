@@ -1,5 +1,31 @@
 # 03 — Features
 
+## Phase 2.0 — Architectural Foundation (in progress)
+- **Category archetypes**: Every category belongs to one of 4 archetypes — `assembly` (room recipes), `trade` (single discipline), `element` (one buildable thing), `compliance` (count-only). Implemented in `src/utils/categories/types.ts` via `CategoryArchetype`.
+- **Explicit-archetype factory**: New `catX()` factory takes archetype as the 5th argument. Backwards-compatible `cat()` factory infers archetype from `group` so existing data still compiles.
+- **Per-category control flags**: `dimensionMode` (`area` / `linear` / `wall` / `room` / `item` / `roof` / `none`), `usesParametric` (BoQ unit picker), `supportsPcItems` (whether PC items table renders), `bundles` (child trade IDs absorbed by an assembly).
+- **Pilot categories migrated to `catX()`**: Bathroom (assembly, bundles waterproofing/plumbing/tiling), Electrical (trade, parametric, count-based), Internal Walls (element, type-first stud/brick), Fire & Safety (compliance, count-only).
+- **Informational overlap warnings**: `getOverlapReason()` now reads only the explicit `bundles` array — *not* the loose `relations` list — so adding Internal Walls no longer falsely locks Electrical. The **Add to Project** button is never disabled; it turns amber and reads **"Add Anyway"** when a bundle warning applies.
+- **Recognise Categories feedback pill**: The button now displays "Found N matches — top: [Category]" or "No clear matches — try Browse below" so user gets visible confirmation.
+- **AI key restored badge**: When the persisted Gemini key is loaded on mount, a "Restored from previous session" pill is shown. Cross-tab `storage` event listener keeps multiple tabs in sync.
+
+## Phase 1.2 Builder Improvements
+- **API key persistence**: Stored in `localStorage` key `segal:geminiApiKey` and restored on reload.
+- **Scope draft persistence**: The main scope text + baseline selections are stored during the builder flow via `builderDraft.ts`, so polished scope text is not lost while you add categories.
+- **Large scope input**: Scope input is now a large multi-line textarea suited for full builder notes and AI-polished output.
+- **Detected-category cards**: Recognised categories now render as full cards with confidence, `Add to Project`, `Remove`, overlap warnings, and an expandable category breakdown.
+- **Persistent related categories**: Recommended related categories stay visible after adding scopes instead of disappearing. Added items remain visible with status, and non-added items can still be added later.
+- **Category questions in Details**: Scope details now render per-category selections from category data (for example bathroom tile extent, tile finish, vanity configuration, toilet suite type).
+- **Category Info Panel**: `CategoryInfoPanel.tsx` now shows category questions, stages, PC items, inclusions, exclusions, and related categories before the user adds the scope.
+- **AI polish completeness**: `maxOutputTokens` increased to 4096 + structured prompt requesting headed sections (Demolition / Structural / Plumbing / Electrical / Wet Areas / Finishes / Inclusions / Exclusions) with bullet points.
+
+## Phase 1.0 / 1.1 — Estimating Foundation
+- **Project Baseline step**: First step of the wizard captures total floor area (m²), number of storeys (single / double / multi), and site access difficulty (easy / moderate / tight). Drives scaffolding cost and a global labour multiplier.
+- **Parametric unit library (scaffolded)**: `src/utils/pricing/parametricUnits.ts` declares Rawlinsons-style unit rates for Electrical, Plumbing, Carpentry, Painting, Tiling, Demolition (per point / per lm / per item / per m²). Currently surfaced in the BoQ unit picker for trade categories that have `usesParametric: true`.
+- **Baseline multipliers**: `src/utils/pricing/baselineMultipliers.ts` adds scaffolding & safety-rail line items based on storeys and applies the access difficulty multiplier to total trade cost.
+
+
+
 > **⚠️ STOP — CRITICAL RULES:**
 > 1. **You do NOT have access to the code** — you MUST ask the user for files
 > 2. **NEVER create from scratch** — ask "Please provide: [filename]" first

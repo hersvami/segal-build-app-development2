@@ -27,6 +27,7 @@
 | 3 | Split 43 categories into individual files | Medium | ⏳ TODO |
 | 4 | Builder View action log | Low | ✅ DONE |
 | 5 | Accept All Recommended button | Low | ⏳ TODO |
+| 6 | **Phase 2 rollout (Bathroom assembly model + dimension audit + scope separation + Rawlinsons rates + live recalc)** | **High** | 📋 **PLANNED — see `handover/13-phase-2-rollout.md`** |
 
 ---
 

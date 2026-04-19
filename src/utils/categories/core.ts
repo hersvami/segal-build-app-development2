@@ -1,10 +1,13 @@
 /* ─── Segal Build — Core Categories (20 key categories) ─── */
-import { cat, type WorkCategory } from './types';
+import { cat, catX, type WorkCategory } from './types';
 
 export const CORE_CATEGORIES: WorkCategory[] = [
-  cat('bathroom', '🚿 Bathroom / Wet Areas', 'bathroom', 'wet',
+  catX('bathroom', '🚿 Bathroom / Wet Areas', 'bathroom', 'wet', 'assembly',
     [{ id: 'size', label: 'Approximate size', type: 'select', options: ['Small (3x2m)', 'Medium (4x3m)', 'Large (5x3m)', 'Custom'] },
      { id: 'type', label: 'Type', type: 'select', options: ['Full renovation', 'New ensuite', 'New bathroom'] },
+     { id: 'tileExtent', label: 'Wall tile extent', type: 'select', options: ['Shower only + skirting tile', '1200mm high walls', '2100mm high walls', 'Floor-to-ceiling walls'] },
+     { id: 'tileFinish', label: 'Tile finish level', type: 'select', options: ['Standard ceramic', 'Rectified porcelain', 'Feature wall included', 'Large-format premium'] },
+     { id: 'vanityType', label: 'Vanity configuration', type: 'select', options: ['Standard 600mm vanity', '900mm vanity', '1200mm double vanity', 'Custom joinery vanity'] },
      { id: 'fixtures', label: 'Fixture quality', type: 'select', options: ['Standard', 'Mid-range', 'Premium'] }],
     [
       { name: 'Demolition & Removal', trade: 'Demo', rate: 2800, unit: 'item', duration: 2, description: 'Strip bathroom, remove debris' },
@@ -27,7 +30,8 @@ export const CORE_CATEGORIES: WorkCategory[] = [
     ],
     ['AS3740 waterproofing compliance', 'All labour and materials', 'Waste removal and disposal', 'Standard fixture installation', 'Silicone sealing to all joints'],
     ['Asbestos removal', 'Structural alterations', 'Council/permit fees', 'Engineer certification', 'Floor levelling if required'],
-    [{ categoryId: 'waterproofing', type: 'auto' }, { categoryId: 'plumbing', type: 'auto' }, { categoryId: 'electrical', type: 'auto' }, { categoryId: 'cabinetry', type: 'suggested' }, { categoryId: 'flooring', type: 'suggested' }, { categoryId: 'painting', type: 'suggested' }],
+    [{ categoryId: 'cabinetry', type: 'suggested' }, { categoryId: 'flooring', type: 'suggested' }, { categoryId: 'painting', type: 'suggested' }],
+    { dimensionMode: 'area', bundles: ['waterproofing', 'plumbing', 'tiling'], supportsPcItems: true, contingency: 10, workType: 'renovation' },
   ),
 
   cat('kitchen', '🍳 Kitchen', 'kitchen', 'wet',
@@ -156,18 +160,19 @@ export const CORE_CATEGORIES: WorkCategory[] = [
     8, 'new_build',
   ),
 
-  cat('electrical', '⚡ Electrical', 'electrical', 'trades',
-    [{ id: 'scope', label: 'Scope', type: 'select', options: ['Switchboard upgrade', 'Rewire', 'New install', 'Lighting only'] }],
+  catX('electrical', '⚡ Electrical', 'electrical', 'trades', 'trade',
+    [{ id: 'scope', label: 'Scope of works', type: 'select', options: ['Switchboard upgrade', 'Rewire (whole house)', 'New install (room/area)', 'Lighting only', 'Additional points only'] }],
     [
-      { name: 'Switchboard Upgrade', trade: 'Electrical', rate: 2800, unit: 'item', duration: 1, description: 'Upgrade to modern board' },
-      { name: 'Rewire/Install', trade: 'Electrical', rate: 120, unit: 'item', duration: 3, description: 'Power points, lighting, switches' },
-      { name: 'Testing & Certification', trade: 'Electrical', rate: 450, unit: 'item', duration: 0.5, description: 'Test and certify installation' },
+      // Stage list kept as a fallback for legacy data — parametric items drive real pricing.
+      { name: 'Rough-in (cabling)', trade: 'Electrical', rate: 0, unit: 'item', duration: 2, description: 'Run TPS through ceiling/wall cavities' },
+      { name: 'Fit-off (devices)',  trade: 'Electrical', rate: 0, unit: 'item', duration: 1, description: 'Fit GPOs, switches, light fittings' },
+      { name: 'Test & Certify',     trade: 'Electrical', rate: 0, unit: 'item', duration: 0.5, description: 'AS/NZS 3000 compliance certificate' },
     ],
-    [{ description: 'Power Points', allowance: 180, unit: 'each' }, { description: 'Light Points', allowance: 150, unit: 'each' }],
-    ['Licensed electrician', 'Compliance certificate', 'All materials included'],
-    ['Smart home integration', 'Generator installation', 'Solar installation'],
+    [], // No PC items on a pure trade — finishes are picked at the assembly that contains them.
+    ['Licensed A-grade electrician', 'AS/NZS 3000 compliance certificate', 'All cabling and accessories'],
+    ['Switchboard upgrade unless explicitly itemised', 'Solar / battery / EV charger', 'Smart-home programming', 'Patching & painting after chasing'],
     [],
-    5, 'maintenance',
+    { dimensionMode: 'none', supportsPcItems: false, usesParametric: true, contingency: 5, workType: 'maintenance' },
   ),
 
   cat('plumbing', '🔧 Plumbing', 'plumbing', 'trades',
@@ -212,7 +217,7 @@ export const CORE_CATEGORIES: WorkCategory[] = [
     8, 'maintenance',
   ),
 
-  cat('roofing', '�� Roofing — Re-Roof', 'roofing', 'external',
+  cat('roofing', '🏠 Roofing — Re-Roof', 'roofing', 'external',
     [{ id: 'type', label: 'Roof type', type: 'select', options: ['Tile to Colorbond', 'Full re-roof tile', 'Full re-roof metal'] }],
     [
       { name: 'Strip Existing Roof', trade: 'Roofing', rate: 45, unit: 'area', duration: 2, description: 'Remove old roofing material' },

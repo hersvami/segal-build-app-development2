@@ -24,6 +24,7 @@
 
 | Feature | Description | Effort | Files To Request |
 |---|---|---|---|
+| **Phase 2 Rollout** | Bathroom Room-Assembly model + dimension audit + Project/Category scope split + Rawlinsons rate audit + live recalc | **Large** | **See `handover/13-phase-2-rollout.md` — full step-by-step plan** |
 | Firebase Firestore | Migrate from localStorage to cloud database | Large | `src/logic/state.ts`, `src/types/appState.ts` |
 | Authentication | User login, role-based access (builder vs customer) | Large | `src/App.tsx`, `src/logic/state.ts` |
 | Customer Portal | Separate view for customers to view/approve quotes online | Large | `src/components/report/CustomerView.tsx`, `src/App.tsx` |

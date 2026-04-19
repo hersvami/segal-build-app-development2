@@ -67,19 +67,22 @@
 ### Categories — request these for construction trade data
 | File | Purpose |
 |---|---|
-| `src/utils/categories/types.ts` | WorkCategory, ScopeQuestion types (~40 lines) |
-| `src/utils/categories/core.ts` | 20 core categories: wet areas, kitchen, structural (~290 lines) |
-| `src/utils/categories/extended.ts` | 23 extended categories: heritage, acoustic, smart home (~280 lines) |
+| `src/utils/categories/types.ts` | **Phase 2** — `CategoryArchetype` + `cat()` (backwards-compat, infers archetype) + `catX()` (explicit archetype) + control flag defaults (~155 lines) |
+| `src/utils/categories/core.ts` | 20 core categories. **Bathroom** + **Electrical** migrated to `catX()` with explicit archetypes (~315 lines) |
+| `src/utils/categories/extended.ts` | 23 extended categories. **Internal Walls** + **Fire & Safety** migrated to `catX()` with explicit archetypes (~300 lines) |
+| `src/utils/categories/categoryTypeOptions.ts` | Material/type option lists per category (used by TypeSelector) (~145 lines) |
 
 ### Pricing — request these for quote calculation logic
 | File | Purpose |
 |---|---|
 | `src/utils/pricing/types.ts` | StageTemplate, SolutionTemplate types (~30 lines) |
 | `src/utils/pricing/constants.ts` | Trade markers, overhead rates (~40 lines) |
-| `src/utils/pricing/engine.ts` | Solution generator (~80 lines) |
+| `src/utils/pricing/engine.ts` | Solution generator + scope-total helpers (~120 lines) |
 | `src/utils/pricing/quoteCalculator.ts` | OH + Profit + Contingency + GST calculation (~60 lines) |
 | `src/utils/pricing/quoteDefaults.ts` | Pre-filled PC items, inclusions, exclusions (~100 lines) |
 | `src/utils/pricing/scopeRecogniser.ts` | Keyword + AI scope classification (~80 lines) |
+| `src/utils/pricing/parametricUnits.ts` | **Phase 1** — Rawlinsons-style unit-rate library (per point/per lm/per item). Currently rolled out for Electrical (~75 lines). See `handover/13-parametric-pricing.md` |
+| `src/utils/pricing/baselineMultipliers.ts` | **Phase 1** — Project baseline → scaffolding cost + site access labour multiplier (~70 lines) |
 | `src/utils/pricing/index.ts` | Barrel exports (~30 lines) |
 
 ### Components — request these for UI work
@@ -93,14 +96,27 @@
 | `src/components/PhotoCapture.tsx` | Shared Upload/Take Photo component (~130 lines) |
 | `src/components/SendWelcomeEmailModal.tsx` | 5-channel welcome message sender (~280 lines) |
 | `src/components/ExternalQuoteModal.tsx` | External quote baseline for non-app jobs (~120 lines) |
-| `src/components/VariationBuilder.tsx` | 4-step wizard: Scope → Details → Pricing → Review (~278 lines) |
+| `src/components/VariationBuilder.tsx` | 5-step wizard: Project Baseline → Scope → Details → Pricing → Review. Holds bundled-trade lockout logic (`getBundledIds`), recognise feedback, AI key restored detection, cross-tab storage sync (~280 lines) |
 | `src/components/welcomeMessages.ts` | Email + SMS message builders (~135 lines) |
 
 ### Variation Builder Sub-Components
 | File | Purpose |
 |---|---|
-| `src/components/variationBuilder/ScopeStep.tsx` | Step 1 — scope input, AI recognition, categories (~250 lines) |
-| `src/components/variationBuilder/Editors.tsx` | PC item, inclusion, exclusion editors (~100 lines) |
+| `src/components/variationBuilder/BaselineStep.tsx` | **Phase 1** — Project Baseline step (total area, storeys, site access) (~140 lines) |
+| `src/components/variationBuilder/CategoryInfoPanel.tsx` | Expandable "What's inside this category?" panel (questions, stages, PC items, inclusions, exclusions, related) (~150 lines) |
+| `src/components/variationBuilder/CategoryCard.tsx` | Detected / suggested category card with Add/Remove CTA + info panel (~95 lines) |
+| `src/components/variationBuilder/AddedScopesPanel.tsx` | Scope-step review of already-added scopes (~75 lines) |
+| `src/components/variationBuilder/ScopeStep.tsx` | Step 2 — large scope textarea, detected-category cards, persistent related-category cards, category browser (~270 lines) |
+| `src/components/variationBuilder/Editors.tsx` | ScopeDetailEditor (description, questions, dimensions, stages, parametric, lists) (~220 lines) |
+| `src/components/variationBuilder/CategoryQuestions.tsx` | Renders category-specific questions in Details (tile extent, vanity type, etc.) (~70 lines) |
+| `src/components/variationBuilder/ParametricEditor.tsx` | Bill-of-Quantities unit picker (per point/per lm) (~145 lines) |
+| `src/components/variationBuilder/EditableList.tsx` | Shared editable Inclusion / Exclusion list (~85 lines) |
+| `src/components/variationBuilder/PCItemEditor.tsx` | PC items table with add/remove (~55 lines) |
+| `src/components/variationBuilder/DimensionInput.tsx` | Numeric m / lm input (~20 lines) |
+| `src/components/variationBuilder/PricingStep.tsx` | Extracted pricing-step UI (~55 lines) |
+| `src/components/variationBuilder/ReviewStep.tsx` | Extracted review-step UI (~70 lines) |
+| `src/components/variationBuilder/builderDraft.ts` | Builder draft load/save/clear helpers for local persistence (~60 lines) |
+| `src/components/variationBuilder/createScopeFromCategory.ts` | Scope factory with category-question defaults + quote defaults (~30 lines) |
 
 ### Report Components — request these for report/output work
 | File | Purpose |

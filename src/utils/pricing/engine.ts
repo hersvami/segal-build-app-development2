@@ -100,5 +100,18 @@ function createEmptyScope(categoryId: string, description: string, dimensions: {
     pcItems: [],
     inclusions: [],
     exclusions: [],
+    parametricItems: [],
   };
+}
+
+/** Sum the cost of all stages + parametric items in a scope. */
+export function calcScopeTotal(scope: QuoteScope): number {
+  const stageTotal = scope.stages.reduce((s, st) => s + (st.cost || 0), 0);
+  const paramTotal = (scope.parametricItems || []).reduce((s, p) => s + (p.rate * p.quantity), 0);
+  return stageTotal + paramTotal;
+}
+
+/** Sum cost across an array of scopes. */
+export function calcScopesTotal(scopes: QuoteScope[]): number {
+  return scopes.reduce((s, sc) => s + calcScopeTotal(sc), 0);
 }

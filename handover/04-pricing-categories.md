@@ -108,10 +108,32 @@ All rates are Rawlinsons/Cordell 2024/2025 base rates for Australian residential
 ## Category Data Structure
 Each category object contains:
 - `id`, `label`, `icon`, `group` — identification
-- `questions[]` — dynamic scope questions shown in Step 2
-- `stages[]` — trade stages with base rates and unit types (area/linear/item/allow)
-- `relatedCategories` — auto (must-have) + suggested (nice-to-have) cross-links
-- `defaultPCItems[]`, `defaultInclusions[]`, `defaultExclusions[]` — pre-filled items
+- **`archetype`** — `'assembly' | 'trade' | 'element' | 'compliance'` (Phase 2). Drives UI behaviour and pricing model.
+- **`dimensionMode`** — `'area' | 'linear' | 'wall' | 'room' | 'item' | 'roof' | 'none'` (Phase 2). Controls which dimension fields render in Details.
+- **`usesParametric`** — boolean (Phase 2). When true, the BoQ unit picker is shown instead of generic stages.
+- **`supportsPcItems`** — boolean (Phase 2). When false, the PC Items table is hidden.
+- **`bundles`** — `string[]` of category IDs this category absorbs (Phase 2). Used by `getOverlapReason()` to mark child trades as "Already included".
+- `questions[]` — dynamic scope questions shown in Step 2 (rendered by `CategoryQuestions.tsx`)
+- `stages[]` — trade stages with base rates and unit types (area / linear / item / allow)
+- `relations[]` — soft suggestions only (does NOT block or warn). Hard inclusion lives in `bundles`.
+- `inclusions[]`, `exclusions[]`, `pcItems[]` — pre-filled defaults
+
+### Phase 2 pilot categories (4 of 43 migrated to `catX()` with explicit archetype)
+| Category | Archetype | Dimension Mode | Parametric | PC Items | Bundles |
+|---|---|---|---|---|---|
+| **Bathroom** | `assembly` | `area` | no | yes | `waterproofing`, `plumbing`, `tiling` |
+| **Electrical** | `trade` | `none` | **yes** | no | — |
+| **Internal Walls** | `element` | `wall` | no | no | — |
+| **Fire & Safety** | `compliance` | `none` | no | no | — |
+
+The remaining 39 categories still use the backwards-compatible `cat()` factory which infers archetype from `group`. Migrating them is the Phase 2 rollout — see `handover/13-phase-2-rollout.md`.
+
+### Current notable question coverage
+- **Bathroom** includes explicit selections for wall tile extent, tile finish level, vanity configuration, and fixture quality.
+- **Toilet / WC** includes tile extent and toilet suite type selections.
+- **Internal Walls** asks for type (stud / brick / double-stud) first, then surfaces only relevant dimensions.
+- **Fire & Safety** asks for fitting type + count, no dimensions.
+- These selections appear in the Details step and are previewed in the category info panel before adding the scope.
 
 ## Current File Structure
 Categories are in 2 grouped files (keeping under 300 lines each):

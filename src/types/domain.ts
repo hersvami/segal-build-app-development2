@@ -67,17 +67,36 @@ export type Solution = {
   description: string;
 };
 
+export type ParametricItem = {
+  id: string;
+  unitId: string;          // reference into the parametric library
+  label: string;           // e.g. "Double GPO"
+  unit: 'each' | 'lm' | 'm2' | 'allow';
+  rate: number;            // unit rate inc. labour & materials
+  quantity: number;
+  notes?: string;
+};
+
 export type QuoteScope = {
   id: string;
   categoryId: string;
   categoryLabel: string;
   description: string;
+  selectedType?: string;   // material/type chosen from category type options
   stages: JobStage[];
   dimensions: { width: number; length: number; height: number };
   answers: Record<string, string>;
   pcItems: PCItem[];
   inclusions: InclusionItem[];
   exclusions: ExclusionItem[];
+  parametricItems?: ParametricItem[]; // Rawlinsons-style unit pricing
+};
+
+export type ProjectBaseline = {
+  totalAreaM2: number;             // total project floor area
+  storeys: 'single' | 'double' | 'multi';
+  siteAccess: 'easy' | 'moderate' | 'tight';
+  notes?: string;
 };
 
 export type QuotePricing = {
@@ -150,4 +169,5 @@ export type Variation = {
   internalNotes: string[];
   progressPhotos?: ProgressPhoto[];
   progressStages?: ProgressStage[];
+  baseline?: ProjectBaseline;
 };

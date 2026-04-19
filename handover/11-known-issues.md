@@ -26,7 +26,7 @@
 | No authentication | Anyone with URL can access | Deploy behind company VPN | `src/App.tsx` |
 | Photos as base64 | Large photos bloat localStorage | Configure Cloudinary env vars | `src/utils/services.ts`, `src/components/PhotoCapture.tsx` |
 | No PDF export | Customers must view quotes in browser | Print to PDF from browser | `src/components/report/CustomerView.tsx` |
-| Gemini key not persisted | Must re-enter each session | Save in .env file for dev | `src/components/variationBuilder/ScopeStep.tsx` |
+| ~~Gemini key not persisted~~ | ✅ **FIXED** in Phase 1 — key stored in `localStorage` (`segal:geminiApiKey`), restored on mount with "Restored from previous session" badge, cross-tab sync via `storage` event | n/a | `src/components/variationBuilder/ScopeStep.tsx`, `src/components/VariationBuilder.tsx` |
 | No offline mode | Requires internet for AI features | Keyword fallback works offline | `src/utils/services.ts` |
 | Company logos from GitHub | May break if repo goes private | Host logos on Firebase Storage | `src/constants/companies.ts` |
 

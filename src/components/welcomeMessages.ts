@@ -26,11 +26,11 @@ export function buildEmailBody(
   const licence = company.licence ? `  |  ${company.licence}` : '';
 
   return `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   ${company.name}
   ABN: ${company.abn}${licence}
   📞 ${company.phone}  |  📧 ${company.email}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Dear ${name},
 
@@ -93,10 +93,10 @@ ${company.name}
 ABN: ${company.abn}${company.licence ? `\n${company.licence}` : ''}
 ${company.phone}  |  ${company.email}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 This is an automated message from ${company.name}.
 Please do not reply directly to this message.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`.trim();
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`.trim();
 }
 
 export function buildSmsBody(

@@ -100,6 +100,7 @@ export function ProjectForm({ onSubmit, onCancel }: Props) {
             label="Project Hero Photo"
             value={heroPhoto}
             onChange={setHeroPhoto}
+            className=""
           />
 
           <div className="flex gap-3 pt-4">

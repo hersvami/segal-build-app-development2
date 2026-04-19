@@ -1,5 +1,11 @@
 # 00 — Master Index
 
+> **Phase 2.0 — Architectural Foundation (in progress):** Categories now declare a `CategoryArchetype` (`assembly` / `trade` / `element` / `compliance`) plus control flags (`dimensionMode`, `usesParametric`, `supportsPcItems`, `bundles`). The 4 pilot categories — **Bathroom** (assembly), **Electrical** (trade), **Internal Walls** (element), **Fire & Safety** (compliance) — are migrated to the new explicit-archetype factory `catX()`. Existing data still compiles via backwards-compatible `cat()` which infers archetype from group. Overlap warnings are now **informational only** — the **Add to Project** button is never disabled (turns amber **"Add Anyway"** when a bundle warning applies). Recognise Categories button now shows visible feedback. AI key restored-from-session badge added; cross-tab `storage` sync wired. **Phase 2 rollout plan** documented in `handover/13-phase-2-rollout.md` — read that next.
+
+> **Phase 1.2:** Scope builder UX overhaul. Recognised categories render as full cards with **Add to Project / Remove** actions and expandable contents. Related categories stay visible after adding scopes. Scope drafts are persisted locally during the builder flow, the scope input is no longer cleared when adding a category, category-specific questions render in Details (e.g. bathroom tile extent, vanity type), and overlap warnings prevent accidental double-pricing of bundled trades.
+
+> **Phase 1.0/1.1:** Project Baseline step (total area, storeys, site access) added; Rawlinsons-style parametric unit library scaffolded for Electrical; AI polish bumped to 4096 tokens with structured prompt; AI key persisted to `localStorage`.
+
 > **⚠️ STOP — READ THIS BEFORE DOING ANYTHING:**
 >
 > 1. **You do NOT have access to the project code** — you MUST ask the user to provide files
@@ -20,7 +26,7 @@ Segal Build is a professional construction quoting and variation management app 
 
 ---
 
-## This Project Has 13 Handover Modules
+## This Project Has 14 Handover Modules
 
 Each module is a self-contained document. Read only the one you need. Every module tells you:
 1. What it covers
@@ -46,6 +52,7 @@ Each module is a self-contained document. Read only the one you need. Every modu
 | **Plan future features** | `handover/10-future-roadmap.md` |
 | **Check known issues** | `handover/11-known-issues.md` |
 | **Build the full app from all modules** | `handover/12-final-assembly.md` |
+| **Execute the next-up Phase 2 plan** | `handover/13-phase-2-rollout.md` |
 
 ---
 
